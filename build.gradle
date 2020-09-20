@@ -1,0 +1,50 @@
+buildscript {
+    repositories {
+        google()
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+        jcenter()
+    }
+    dependencies {
+        classpath "com.squareup.sqldelight:gradle-plugin:1.4.3"
+    }
+}
+
+plugins {
+    id 'org.jetbrains.kotlin.jvm' version '1.4.10'
+    id 'application'
+}
+
+apply plugin: "com.squareup.sqldelight"
+
+group = 'com.example'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+    maven { url "https://dl.bintray.com/touchlabpublic/kotlin" }
+}
+
+dependencies {
+    implementation "org.xerial:sqlite-jdbc:3.32.3"
+    implementation "com.squareup.sqldelight:sqlite-driver:1.4.3"
+    implementation "com.jakewharton.timber:timber-jdk:5.0.0-k1.3.0-a1"
+    implementation "com.jakewharton.timber:timber-common:5.0.0-k1.3.0-a1"
+}
+
+compileKotlin {
+    kotlinOptions.jvmTarget = '1.8'
+}
+
+application {
+    mainClassName = 'MainKt'
+}
+
+sqldelight {
+    Database {
+        packageName = "com.example.db"
+        schemaOutputDirectory = file("src/main/sqldelight/databases")
+        dialect = "sqlite:3.24"
+    }
+}
